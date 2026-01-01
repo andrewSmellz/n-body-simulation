@@ -8,6 +8,10 @@
 
 #include "glm/vec3.hpp"
 
+struct SphereData {
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
+};
 
 class body {
 public:
@@ -19,13 +23,14 @@ public:
 
     body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass);
 
-    static std::vector<float> generateCircleVertices(float radius, int segments = 128);
+    static SphereData generateSphereVertices(float radius, int segments = 32);
 
     void collisionCheck(body &other);
 
     glm::vec3 calculateGravitationalForce(const body &other);
 
-    static body createStableOrbit(const body &central, float orbitRadius, float angle, glm::vec3 colour, float radius,
+    static body createStableOrbit(const body &central, float orbitRadius, float angle, float inclination,
+                                  glm::vec3 colour, float radius,
                                   float mass);
 };
 

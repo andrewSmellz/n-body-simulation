@@ -47,6 +47,8 @@ add_executable(n_body_simulation_GL
         shader.h
         body.cpp
         body.h
+        camera.cpp
+        camera.h
 )
 
 # ------------------------------------
