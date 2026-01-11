@@ -11,6 +11,7 @@
 struct SphereData {
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
+    std::vector<float> normals;
 };
 
 class body {

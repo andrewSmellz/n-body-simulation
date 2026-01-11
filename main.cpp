@@ -76,15 +76,15 @@ int main() {
     std::uniform_real_distribution<float> angle_dist(0.0f, 2.0f * 3.14159f);
     std::uniform_real_distribution<float> inclination_dist(-0.8f, 0.8f);
     std::uniform_real_distribution<float> mass_dist(1.0f, 10.0f);
-    std::uniform_real_distribution<float> body_radius_dist(15.0f, 150.0f);
+    std::uniform_real_distribution<float> body_radius_dist(15.0f, 30.0f);
 
     std::vector<body> bodies;
 
-    float centralMass = 1000000.0f;
-    body sun(glm::vec3(960, 540, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 0), 1000, centralMass);
+    float centralMass = 10000.0f;
+    body sun(glm::vec3(960, 540, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 0), 100, centralMass);
     bodies.push_back(sun);
 
-    int numBodies = 50;
+    int numBodies = 100;
     for (size_t i = 0; i < numBodies; i++) {
         float radius = radius_dist(gen);
         float angle = angle_dist(gen);
@@ -99,7 +99,7 @@ int main() {
     }
 
     // Generate sphere with indices
-    auto [vertices, indices] = body::generateSphereVertices(1.0f, 32);
+    auto [vertices, indices,normals] = body::generateSphereVertices(1.0f, 32);
 
     unsigned int VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);
@@ -121,6 +121,10 @@ int main() {
     // Vertex position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), static_cast<void *>(nullptr));
     glEnableVertexAttribArray(0);
+
+    //vertex normal attribute
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(4);
 
     // Setup instance buffer
     unsigned int instanceVBO;
@@ -149,6 +153,7 @@ int main() {
     shader.use();
 
     std::cout << "Begin simulation...." << std::endl;
+    std::cout << "number of bodies: " << bodies.size() << std::endl;
     std::cout << "Sphere vertices: " << vertices.size() / 3 << std::endl;
     std::cout << "Sphere indices: " << indices.size() << std::endl;
 
@@ -211,6 +216,8 @@ int main() {
             shader.use();
             shader.setMat4("projection", projection);
             shader.setMat4("view", view);
+            shader.setVec3("lightPos", bodies[0].position);
+            shader.setVec3("viewPos", camera.Position);
 
             glBindVertexArray(VAO);
             // Use glDrawElementsInstanced instead of glDrawArraysInstanced
@@ -269,6 +276,8 @@ void processInput(GLFWwindow *window) {
         camera.ProcessKeyboard(RIGHT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
         camera.ProcessKeyboard(UP, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
         camera.ProcessKeyboard(DOWN, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
+
 }

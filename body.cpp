@@ -34,6 +34,10 @@ SphereData body::generateSphereVertices(float radius, int segments) {
             sphere.vertices.push_back(x);
             sphere.vertices.push_back(y);
             sphere.vertices.push_back(z);
+            glm::vec3 normal = glm::normalize(glm::vec3(x,y,z));
+            sphere.normals.push_back(normal.x);
+            sphere.normals.push_back(normal.y);
+            sphere.normals.push_back(normal.z);
         }
     }
 
