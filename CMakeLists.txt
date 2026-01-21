@@ -71,6 +71,8 @@ add_executable(n_body_simulation_GL
         menuGUI.h
         renderer.cpp
         renderer.h
+        physicsEngine.cpp
+        physicsEngine.h
 )
 
 # ------------------------------------

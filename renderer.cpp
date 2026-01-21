@@ -71,7 +71,7 @@ bool renderer::init() {
     return true;
 }
 
-void renderer::setupBuffers(const SphereData &sphereData, int numBodies) {
+void renderer::setupBuffers(const SphereData &sphereData, unsigned int numBodies) {
     indexCount = sphereData.indices.size();
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -160,7 +160,7 @@ bool renderer::shouldClose() const {
     return glfwWindowShouldClose(window);
 }
 
-void renderer::processInput(float deltaTime) {
+void renderer::processInput(double deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 

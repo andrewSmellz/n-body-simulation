@@ -18,13 +18,13 @@ public:
 
     bool init();
 
-    void setupBuffers(const SphereData &sphereData, int numBodies);
+    void setupBuffers(const SphereData &sphereData, unsigned int numBodies);
 
     void renderFrame(const std::vector<body> &bodies, const Shader &shader);
 
     [[nodiscard]] bool shouldClose() const;
 
-    void processInput(float deltaTime);
+    void processInput(double deltaTime);
 
     void swapBuffers() const;
 
