@@ -2,25 +2,22 @@
 #include "shader.h"
 #include "menuGUI.h"
 #include "physicsEngine.h"
+#include "config.h"
 
-constexpr unsigned int SCR_WIDTH = 1980;
-constexpr unsigned int SCR_HEIGHT = 1080;
-unsigned int numBodies = 1;
 
-// Timing
 double deltaTime = 0.0f;
 double lastFrame = 0.0f;
 
 int main() {
-    renderer renderEngine(SCR_WIDTH, SCR_HEIGHT, "N-Body Simulation OpenGL");
+    renderer renderEngine(CONFIG.screenWidth, CONFIG.screenHeight, CONFIG.windowTitle);
     menuGUI menu(renderEngine.getWindow());
     Shader shader("../shader.vert", "../shader.frag");
 
 
-    auto bodies = body::generateBodies(numBodies);
+    auto bodies = body::generateBodies(menu.targetBodyCount);
     auto sphereData = body::generateSphereVertices(1.0f, 32);
 
-    renderEngine.setupBuffers(sphereData, numBodies);
+    renderEngine.setupBuffers(sphereData, menu.targetBodyCount);
 
     while (!renderEngine.shouldClose()) {
         double currentTime = glfwGetTime();
@@ -28,7 +25,24 @@ int main() {
         lastFrame = currentTime;
 
         renderEngine.processInput(deltaTime);
-        physicsEngine::update(bodies, deltaTime);
+
+        if (menu.needsUpdate) {
+            menu.update();
+            bodies = body::generateBodies(CONFIG.numBodies);
+            renderEngine.setupBuffers(sphereData, CONFIG.numBodies);
+            menu.needsUpdate = false;
+        }
+        if (menu.needsReset) {
+            menu.reset();
+            menu.update();
+            bodies = body::generateBodies(CONFIG.numBodies);
+            renderEngine.setupBuffers(sphereData, CONFIG.numBodies);
+            menu.needsReset = false;
+        }
+        if (!CONFIG.paused) {
+            physicsEngine::update(bodies, deltaTime);
+        }
+
         renderEngine.renderFrame(bodies, shader);
         menuGUI::newFrame();
         menu.render();

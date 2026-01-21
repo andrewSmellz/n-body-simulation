@@ -42,6 +42,7 @@ private:
     bool menuMode;
     bool firstMouse;
     bool tabPressed;
+    bool pausePressed;
     float lastX, lastY;
 
     static renderer *getRenderer(GLFWwindow *window);
@@ -50,7 +51,7 @@ private:
 
     static void mouseCallback(GLFWwindow *window, double xpos, double ypos);
 
-    static void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+    static void scrollCallback(GLFWwindow *window, double xoffset, double ypos);
 };
 
 

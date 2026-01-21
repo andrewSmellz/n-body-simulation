@@ -3,10 +3,13 @@
 //
 
 #include "renderer.h"
+#include "config.h"
 #include <iostream>
 
 renderer::renderer(int width, int height, const char *title) : window(nullptr),
-                                                               camera(glm::vec3(960.0f, 540.0f, 2000.0f)),
+                                                               camera(glm::vec3(
+                                                                   CONFIG.screenWidth / 2.0f,
+                                                                   CONFIG.screenHeight / 2.0f, 2000.0f)),
                                                                width(width),
                                                                height(height),
                                                                title(title),
@@ -15,6 +18,7 @@ renderer::renderer(int width, int height, const char *title) : window(nullptr),
                                                                menuMode(false),
                                                                firstMouse(true),
                                                                tabPressed(false),
+                                                               pausePressed(false),
                                                                lastX(width / 2.0f),
                                                                lastY(height / 2.0f) {
     renderer::init();
@@ -47,6 +51,13 @@ bool renderer::init() {
         glfwTerminate();
         return false;
     }
+
+    GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode *mode = glfwGetVideoMode(primaryMonitor);
+    int xpos = (mode->width - width) / 2;
+    int ypos = (mode->height - height) / 2;
+    glfwSetWindowPos(window, xpos, ypos);
+
     glfwMakeContextCurrent(window);
     glfwSetWindowUserPointer(window, this);
 
@@ -177,6 +188,15 @@ void renderer::processInput(double deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE) {
         tabPressed = false;
     }
+
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pausePressed) {
+        CONFIG.paused = !CONFIG.paused;
+        pausePressed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE) {
+        pausePressed = false;
+    }
+
     if (!menuMode) {
         if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
             camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -236,5 +256,3 @@ void renderer::scrollCallback(GLFWwindow *window, double xoffset, double yoffset
 
     r->camera.ProcessMouseScroll(yoffset);
 }
-
-

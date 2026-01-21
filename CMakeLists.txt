@@ -73,6 +73,7 @@ add_executable(n_body_simulation_GL
         renderer.h
         physicsEngine.cpp
         physicsEngine.h
+        config.h
 )
 
 # ------------------------------------
