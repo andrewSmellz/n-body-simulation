@@ -3,12 +3,14 @@
 //
 
 #include "body.h"
+#include "config.h"
 #include <cmath>
+#include <random>
 
 #include "glm/detail/func_geometric.inl"
 
 body::body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass)
-    : position(position), velocity(velocity), colour(colour), radius(radius), mass(mass) {
+    : position(position), velocity(velocity), colour(colour), mass(mass), radius(radius) {
 }
 
 SphereData body::generateSphereVertices(float radius, int segments) {
@@ -34,7 +36,7 @@ SphereData body::generateSphereVertices(float radius, int segments) {
             sphere.vertices.push_back(x);
             sphere.vertices.push_back(y);
             sphere.vertices.push_back(z);
-            glm::vec3 normal = glm::normalize(glm::vec3(x,y,z));
+            glm::vec3 normal = glm::normalize(glm::vec3(x, y, z));
             sphere.normals.push_back(normal.x);
             sphere.normals.push_back(normal.y);
             sphere.normals.push_back(normal.z);
@@ -60,6 +62,41 @@ SphereData body::generateSphereVertices(float radius, int segments) {
     }
 
     return sphere;
+}
+
+std::vector<body> body::generateBodies(unsigned int numBodies) {
+    std::vector<body> bodies;
+    body sun(
+        glm::vec3(CONFIG.screenWidth / 2.0f, CONFIG.screenHeight / 2.0f, 0),
+        glm::vec3(0, 0, 0),
+        glm::vec3(1, 1, 0),
+        CONFIG.centralBodyRadius,
+        CONFIG.centralBodyMass
+    );
+    bodies.push_back(sun);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> radius_dist(CONFIG.minOrbitRadius, CONFIG.maxOrbitRadius);
+    std::uniform_real_distribution<float> angle_dist(0.0f, 2.0f * 3.14159f);
+    std::uniform_real_distribution<float> inclination_dist(-0.8f, 0.8f);
+    std::uniform_real_distribution<float> mass_dist(CONFIG.minBodyMass, CONFIG.maxBodyMass);
+    std::uniform_real_distribution<float> body_radius_dist(CONFIG.minBodyRadius, CONFIG.maxBodyRadius);
+    std::uniform_real_distribution<float> z_dist(-200.0f, 200.0f);
+
+
+    for (size_t i = 0; i < numBodies; i++) {
+        float radius = radius_dist(gen);
+        float angle = angle_dist(gen);
+        float inclination = inclination_dist(gen);
+        glm::vec3 colour(std::sin(i), std::cos(i), 1);
+        float mass = mass_dist(gen);
+        float bodyRadius = body_radius_dist(gen);
+        body b = body::createStableOrbit(sun, radius, angle, inclination, colour, bodyRadius, mass);
+        b.position.z += z_dist(gen);
+        bodies.push_back(b);
+    }
+    return bodies;
 }
 
 void body::collisionCheck(body &other) {
@@ -95,8 +132,8 @@ void body::collisionCheck(body &other) {
 }
 
 glm::vec3 body::calculateGravitationalForce(const body &other) {
-    //constexpr float G = 6.67430e-11f; true value
-    constexpr float G = 1000.0f;
+    //float G = 6.67430e-11f; true value
+    float G = CONFIG.gravitationalConstant;
 
     float distance = glm::distance(this->position, other.position);
     float force = (G * this->mass * other.mass) / (distance * distance);
@@ -108,7 +145,7 @@ glm::vec3 body::calculateGravitationalForce(const body &other) {
 body body::createStableOrbit(const body &central, float orbitRadius, float angle, float inclination, glm::vec3 colour,
                              float radius,
                              float mass) {
-    constexpr float G = 1000.0f;
+    float G = CONFIG.gravitationalConstant;
 
     // Calculate 3D position with inclination
     float x = central.position.x + orbitRadius * std::cos(angle) * std::cos(inclination);

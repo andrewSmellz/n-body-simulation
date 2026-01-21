@@ -11,17 +11,35 @@
 #include <GLFW/glfw3.h>
 
 class menuGUI {
-    public:
-     menuGUI(GLFWwindow* window);
+public:
+    menuGUI(GLFWwindow *window);
+
     ~menuGUI();
+
     void render();
+
     static void newFrame();
 
-    int targetBodyCount = 1000;
+    void update() const;
+
+    void reset();
+
+    int targetBodyCount = 1;
+    float targetGravitationalConstant = 1000.0f;
+    float targetTimeScale = 1.0f;
+    float targetCentralBodyMass = 10000.0f;
+    float targetCentralBodyRadius = 100.0f;
+    float targetMinOrbitRadius = 170.0f;
+    float targetMaxOrbitRadius = 400.0f;
+    float targetMinBodyMass = 1.0f;
+    float targetMaxBodyMass = 10.0f;
+    float targetMinBodyRadius = 15.0f;
+    float targetMaxBodyRadius = 30.0f;
     bool needsUpdate = false;
+    bool needsReset = false;
 
 private:
-    GLFWwindow* window{};
+    GLFWwindow *window{};
 };
 
 

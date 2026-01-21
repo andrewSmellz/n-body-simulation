@@ -26,6 +26,8 @@ public:
 
     static SphereData generateSphereVertices(float radius, int segments = 32);
 
+    static std::vector<body> generateBodies(unsigned int numBodies);
+
     void collisionCheck(body &other);
 
     glm::vec3 calculateGravitationalForce(const body &other);
