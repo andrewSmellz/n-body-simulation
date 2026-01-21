@@ -39,6 +39,24 @@ add_library(glad ${EXTERNAL_DIR}/GLAD/src/glad.c)
 target_include_directories(glad PUBLIC ${EXTERNAL_DIR}/GLAD/include)
 
 # ------------------------------------
+# ImGui library
+# ------------------------------------
+set(IMGUI_DIR ${EXTERNAL_DIR}/imgui)
+add_library(imgui
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+target_include_directories(imgui PUBLIC
+        ${IMGUI_DIR}
+        ${IMGUI_DIR}/backends
+)
+target_link_libraries(imgui PUBLIC glfw glad)
+
+# ------------------------------------
 # n_body_simulation_GL executable
 # ------------------------------------
 add_executable(n_body_simulation_GL
@@ -49,6 +67,10 @@ add_executable(n_body_simulation_GL
         body.h
         camera.cpp
         camera.h
+        menuGUI.cpp
+        menuGUI.h
+        renderer.cpp
+        renderer.h
 )
 
 # ------------------------------------
@@ -64,6 +86,7 @@ target_link_libraries(n_body_simulation_GL
         glfw
         glm::glm
         OpenGL::GL
+        imgui
 )
 
 # ------------------------------------

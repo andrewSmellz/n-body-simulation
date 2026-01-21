@@ -9,6 +9,7 @@
 #include <iostream>
 #include <random>
 #include "camera.h"
+#include "menuGUI.h"
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
@@ -18,7 +19,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset);
 
 void processInput(GLFWwindow *window);
 
-constexpr unsigned int SCR_WIDTH = 1920;
+constexpr unsigned int SCR_WIDTH = 1980;
 constexpr unsigned int SCR_HEIGHT = 1080;
 
 // Camera
@@ -28,6 +29,8 @@ Camera camera(glm::vec3(960.0f, 540.0f, 2000.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+bool menuMode = false;
+bool tabPressed = false;
 
 // Timing
 float deltaTime = 0.0f;
@@ -64,6 +67,10 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     glEnable(GL_DEPTH_TEST);
+
+
+    menuGUI menu(window);
+
 
     // Initialize shader
     const Shader shader("../shader.vert", "../shader.frag");
@@ -225,6 +232,9 @@ int main() {
                                     GL_UNSIGNED_INT, nullptr, bodies.size());
         }
 
+        menu.newFrame();
+        menu.render();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -243,6 +253,8 @@ void framebuffer_size_callback(GLFWwindow *window, const int width, const int he
 }
 
 void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
+    if (menuMode) return;
+
     if (firstMouse) {
         lastX = xpos;
         lastY = ypos;
@@ -259,6 +271,8 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos) {
 }
 
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+    if (menuMode) return;
+
     camera.ProcessMouseScroll(yoffset);
 }
 
@@ -266,18 +280,32 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        camera.ProcessKeyboard(UP, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        camera.ProcessKeyboard(DOWN, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
-
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS && !tabPressed) {
+        menuMode = !menuMode;
+        if (menuMode) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            firstMouse = true;
+        }
+        tabPressed = true;
+    }
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE) {
+        tabPressed = false;
+    }
+    if (!menuMode) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            camera.ProcessKeyboard(FORWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            camera.ProcessKeyboard(BACKWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            camera.ProcessKeyboard(LEFT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            camera.ProcessKeyboard(RIGHT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+            camera.ProcessKeyboard(UP, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+            camera.ProcessKeyboard(DOWN, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
+    }
 }
