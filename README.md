@@ -37,7 +37,7 @@ All dependencies are automatically fetched by CMake during configuration:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/n_body_simulation_GL.git
+git clone https://github.com/andrewSmellz/n-body-simulation.git
 cd n_body_simulation_GL
 
 # Create build directory
@@ -60,7 +60,7 @@ cmake --build .
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/n_body_simulation_GL.git
+git clone https://github.com/andrewSmellz/n_body_simulation_GL.git
 cd n_body_simulation_GL
 
 # Create build directory
@@ -83,7 +83,7 @@ Release\n_body_simulation_GL.exe
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/n_body_simulation_GL.git
+git clone https://github.com/andrewSmellz/n_body_simulation_GL.git
 cd n_body_simulation_GL
 
 # Create build directory
