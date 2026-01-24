@@ -62,3 +62,7 @@ Thumbs.db
 # Backup files
 *~
 *.swp
+
+# FetchContent dependencies
+_deps/
+external/imgui/

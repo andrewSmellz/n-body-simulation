@@ -29,8 +29,17 @@ FetchContent_Declare(
         GIT_TAG 1.0.1
 )
 
+# ------------------------------------
+# Fetch ImGui
+# ------------------------------------
+FetchContent_Declare(
+        imgui
+        GIT_REPOSITORY https://github.com/ocornut/imgui.git
+        GIT_TAG v1.91.5  # Use a specific stable version
+)
+
 # Download dependencies
-FetchContent_MakeAvailable(glfw glm)
+FetchContent_MakeAvailable(glfw glm imgui)
 
 # ------------------------------------
 # GLAD library
@@ -41,20 +50,19 @@ target_include_directories(glad PUBLIC ${EXTERNAL_DIR}/GLAD/include)
 # ------------------------------------
 # ImGui library
 # ------------------------------------
-set(IMGUI_DIR ${EXTERNAL_DIR}/imgui)
-add_library(imgui
-        ${IMGUI_DIR}/imgui.cpp
-        ${IMGUI_DIR}/imgui_draw.cpp
-        ${IMGUI_DIR}/imgui_tables.cpp
-        ${IMGUI_DIR}/imgui_widgets.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
-        ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+add_library(imgui_lib
+        ${imgui_SOURCE_DIR}/imgui.cpp
+        ${imgui_SOURCE_DIR}/imgui_draw.cpp
+        ${imgui_SOURCE_DIR}/imgui_tables.cpp
+        ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+        ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
-target_include_directories(imgui PUBLIC
-        ${IMGUI_DIR}
-        ${IMGUI_DIR}/backends
+target_include_directories(imgui_lib PUBLIC
+        ${imgui_SOURCE_DIR}
+        ${imgui_SOURCE_DIR}/backends
 )
-target_link_libraries(imgui PUBLIC glfw glad)
+target_link_libraries(imgui_lib PUBLIC glfw glad)
 
 # ------------------------------------
 # n_body_simulation_GL executable
@@ -89,7 +97,7 @@ target_link_libraries(n_body_simulation_GL
         glfw
         glm::glm
         OpenGL::GL
-        imgui
+        imgui_lib
 )
 
 # ------------------------------------

@@ -28,7 +28,7 @@ public:
 
     void swapBuffers() const;
 
-    Camera &getCamera() { return camera; };
+    [[nodiscard]] Camera &getCamera() { return camera; };
     [[nodiscard]] GLFWwindow *getWindow() const { return window; };
 
 private:

@@ -5,7 +5,7 @@
 #include "menuGUI.h"
 #include "config.h"
 
-menuGUI::menuGUI(GLFWwindow *window) : window(window), targetBodyCount(CONFIG.numBodies) {
+menuGUI::menuGUI(GLFWwindow *window) : targetBodyCount(CONFIG.numBodies), window(window) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -54,17 +54,22 @@ void menuGUI::render() {
         ImGui::Separator();
         ImGui::Text("Physics Settings");
         ImGui::InputFloat("Gravitational Constant", &targetGravitationalConstant, 100.0f, 1000.0f);
+        if (targetGravitationalConstant < 0) targetGravitationalConstant = 0;
         ImGui::InputFloat("timescale", &targetTimeScale, 0.1f, 10.0f);
+        if (targetTimeScale < 0) targetTimeScale = 0;
 
 
         ImGui::Separator();
         ImGui::Text("Central Body");
         ImGui::InputFloat("Mass##Central", &targetCentralBodyMass, 1000.0f, 50000.0f);
+        if (targetCentralBodyMass < 0) targetCentralBodyMass = 0;
         ImGui::InputFloat("Radius##Central", &targetCentralBodyRadius, 1.0f, 50.0f);
+        if (targetCentralBodyRadius < 0) targetCentralBodyRadius = 0;
 
         ImGui::Separator();
         ImGui::Text("Orbit Radius Range");
         ImGui::InputFloat("Min##Orbit", &targetMinOrbitRadius, 50.0f, 500.0f);
+        if (targetMinOrbitRadius < 0) targetMinOrbitRadius = 0;
         ImGui::InputFloat("Max##Orbit", &targetMaxOrbitRadius, 100.0f, 800.0f);
         if (targetMaxOrbitRadius < targetMinOrbitRadius) {
             targetMaxOrbitRadius = targetMinOrbitRadius;
@@ -73,6 +78,7 @@ void menuGUI::render() {
         ImGui::Separator();
         ImGui::Text("Body Mass Range");
         ImGui::InputFloat("Min##Mass", &targetMinBodyMass, 0.1f, 10.0f);
+        if (targetMinBodyMass < 0) targetMinBodyMass = 0;
         ImGui::InputFloat("Max##Mass", &targetMaxBodyMass, 0.1f, 100.0f);
         if (targetMaxBodyMass < targetMinBodyMass) {
             targetMaxBodyMass = targetMinBodyMass;
@@ -81,6 +87,7 @@ void menuGUI::render() {
         ImGui::Separator();
         ImGui::Text("Body Radius Range");
         ImGui::InputFloat("Min##Radius", &targetMinBodyRadius, 1.0f, 10.0f);
+        if (targetMinBodyRadius < 0) targetMinBodyRadius = 0;
         ImGui::InputFloat("Max##Radius", &targetMaxBodyRadius, 1.0f, 50.0f);
         if (targetMaxBodyRadius < targetMinBodyRadius) {
             targetMaxBodyRadius = targetMinBodyRadius;
@@ -94,10 +101,6 @@ void menuGUI::render() {
         if (ImGui::Button("Reset Simulation")) {
             needsReset = true;
         }
-
-        ImGui::Separator();
-        ImGui::Text("Application average %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
-        ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
     }
     ImGui::End();
     ImGui::Render();

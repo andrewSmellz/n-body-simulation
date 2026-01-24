@@ -24,7 +24,7 @@ public:
 
     body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass);
 
-    static SphereData generateSphereVertices(float radius, int segments = 32);
+    static SphereData generateSphereVertices(float radius, int segments = 1);
 
     static std::vector<body> generateBodies(unsigned int numBodies);
 
