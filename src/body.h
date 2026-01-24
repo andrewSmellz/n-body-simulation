@@ -1,11 +1,6 @@
-//
-// Created by andrew on 12/14/25.
-//
-
 #ifndef N_BODY_SIMULATION_GL_OBJECT_H
 #define N_BODY_SIMULATION_GL_OBJECT_H
 #include <vector>
-
 #include "glm/vec3.hpp"
 
 struct SphereData {

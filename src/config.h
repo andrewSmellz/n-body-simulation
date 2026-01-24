@@ -1,7 +1,3 @@
-//
-// Claude gave me tips here :)
-//
-
 #ifndef N_BODY_SIMULATION_GL_CONFIG_H
 #define N_BODY_SIMULATION_GL_CONFIG_H
 

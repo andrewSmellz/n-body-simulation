@@ -1,7 +1,3 @@
-//
-// Created by andre on 2026-01-21.
-//
-
 #ifndef N_BODY_SIMULATION_GL_PHYSICSENGINE_H
 #define N_BODY_SIMULATION_GL_PHYSICSENGINE_H
 #include <vector>

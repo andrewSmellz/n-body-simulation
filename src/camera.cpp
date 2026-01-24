@@ -1,6 +1,3 @@
-//
-// Created by andrew on 12/30/25.
-//
 
 #include "camera.h"
 

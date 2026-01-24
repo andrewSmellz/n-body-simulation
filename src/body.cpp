@@ -1,12 +1,7 @@
-//
-// Created by andrew on 12/14/25.
-//
-
 #include "body.h"
 #include "config.h"
 #include <cmath>
 #include <random>
-
 #include "glm/detail/func_geometric.inl"
 
 body::body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass)

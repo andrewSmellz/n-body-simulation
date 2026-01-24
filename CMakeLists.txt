@@ -68,20 +68,20 @@ target_link_libraries(imgui_lib PUBLIC glfw glad)
 # n_body_simulation_GL executable
 # ------------------------------------
 add_executable(n_body_simulation_GL
-        main.cpp
-        shader.cpp
-        shader.h
-        body.cpp
-        body.h
-        camera.cpp
-        camera.h
-        menuGUI.cpp
-        menuGUI.h
-        renderer.cpp
-        renderer.h
-        physicsEngine.cpp
-        physicsEngine.h
-        config.h
+        src/main.cpp
+        src/shader.cpp
+        src/shader.h
+        src/body.cpp
+        src/body.h
+        src/camera.cpp
+        src/camera.h
+        src/menuGUI.cpp
+        src/menuGUI.h
+        src/renderer.cpp
+        src/renderer.h
+        src/physicsEngine.cpp
+        src/physicsEngine.h
+        src/config.h
 )
 
 # ------------------------------------

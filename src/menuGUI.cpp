@@ -1,7 +1,3 @@
-//
-// Created by andre on 2026-01-21.
-//
-
 #include "menuGUI.h"
 #include "config.h"
 

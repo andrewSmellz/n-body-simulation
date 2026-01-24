@@ -1,9 +1,4 @@
-//
-// Created by andre on 2026-01-21.
-//
-
 #include "physicsEngine.h"
-
 #include "config.h"
 
 void physicsEngine::update(std::vector<body> &bodies, double deltaTime) {

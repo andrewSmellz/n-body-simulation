@@ -1,7 +1,3 @@
-//
-// Created by andrew on 12/30/25.
-//
-
 #ifndef N_BODY_SIMULATION_GL_CAMERA_H
 #define N_BODY_SIMULATION_GL_CAMERA_H
 

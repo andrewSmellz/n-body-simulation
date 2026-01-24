@@ -5,13 +5,10 @@
 #include "config.h"
 
 
-double deltaTime = 0.0f;
-double lastFrame = 0.0f;
-
 int main() {
     renderer renderEngine(CONFIG.screenWidth, CONFIG.screenHeight, CONFIG.windowTitle);
     menuGUI menu(renderEngine.getWindow());
-    Shader shader("../shader.vert", "../shader.frag");
+    Shader shader("../shaders/shader.vert", "../shaders/shader.frag");
 
 
     auto bodies = body::generateBodies(menu.targetBodyCount);
@@ -19,6 +16,8 @@ int main() {
 
     renderEngine.setupBuffers(sphereData, menu.targetBodyCount);
 
+    double deltaTime = 0.0f;
+    double lastFrame = 0.0f;
     while (!renderEngine.shouldClose()) {
         double currentTime = glfwGetTime();
         deltaTime = currentTime - lastFrame;
