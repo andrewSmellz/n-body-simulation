@@ -5,6 +5,12 @@
 A real-time 3D gravitational N-body simulation built with C++ and OpenGL. Watch celestial bodies orbit, interact, and
 collide in a fully interactive 3D environment with realistic physics.
 
+## Demo
+
+![demo1](demos/demo1.gif)
+![demo2](demos/demo2.gif)
+![demo3](demos/demo3.gif)
+
 ### Controls
 
 - **WASD**: Move camera
