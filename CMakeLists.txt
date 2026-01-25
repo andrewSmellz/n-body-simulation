@@ -106,3 +106,32 @@ target_link_libraries(n_body_simulation_GL
 target_include_directories(n_body_simulation_GL PRIVATE
         ${EXTERNAL_DIR}/GLAD/include
 )
+
+add_custom_command(TARGET n_body_simulation_GL POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/shaders
+        $<TARGET_FILE_DIR:n_body_simulation_GL>/shaders
+)
+
+# ------------------------------------
+# Install configuration for packaging
+# ------------------------------------
+install(TARGETS n_body_simulation_GL
+        RUNTIME DESTINATION .
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/shaders
+        DESTINATION .
+)
+
+# ------------------------------------
+# CPack configuration for creating packages
+# ------------------------------------
+set(CPACK_PACKAGE_NAME "N-Body_Simulation")
+set(CPACK_PACKAGE_VENDOR "Your Name")
+set(CPACK_PACKAGE_VERSION_MAJOR 1)
+set(CPACK_PACKAGE_VERSION_MINOR 0)
+set(CPACK_PACKAGE_VERSION_PATCH 0)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "N-Body Simulation with OpenGL")
+set(CPACK_GENERATOR "ZIP")
+include(CPack)

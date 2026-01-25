@@ -11,8 +11,13 @@ Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) {
     vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try {
+        std::cout << "Attempting to open vertex shader: " << vertexPath << std::endl;
         vShaderFile.open(vertexPath);
+        std::cout << "Vertex shader opened successfully" << std::endl;
+
+        std::cout << "Attempting to open fragment shader: " << fragmentPath << std::endl;
         fShaderFile.open(fragmentPath);
+        std::cout << "Fragment shader opened successfully" << std::endl;
         std::stringstream vShaderStream, fShaderStream;
         vShaderStream << vShaderFile.rdbuf();
         fShaderStream << fShaderFile.rdbuf();

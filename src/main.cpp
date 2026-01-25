@@ -8,7 +8,7 @@
 int main() {
     renderer renderEngine(CONFIG.screenWidth, CONFIG.screenHeight, CONFIG.windowTitle);
     menuGUI menu(renderEngine.getWindow());
-    Shader shader("../shaders/shader.vert", "../shaders/shader.frag");
+    Shader shader("shaders/shader.vert", "shaders/shader.frag");
 
 
     auto bodies = body::generateBodies(menu.targetBodyCount);
