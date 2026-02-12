@@ -1,7 +1,7 @@
 #include "menuGUI.h"
 #include "config.h"
 
-menuGUI::menuGUI(GLFWwindow *window) : targetBodyCount(CONFIG.numBodies), window(window) {
+menuGUI::menuGUI(GLFWwindow *window) : targetBodyCount(config.numBodies), window(window) {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -104,17 +104,17 @@ void menuGUI::render() {
 }
 
 void menuGUI::update() const {
-    CONFIG.numBodies = targetBodyCount;
-    CONFIG.gravitationalConstant = targetGravitationalConstant;
-    CONFIG.timeScale = targetTimeScale;
-    CONFIG.centralBodyMass = targetCentralBodyMass;
-    CONFIG.centralBodyRadius = targetCentralBodyRadius;
-    CONFIG.minOrbitRadius = targetMinOrbitRadius;
-    CONFIG.maxOrbitRadius = targetMaxOrbitRadius;
-    CONFIG.minBodyMass = targetMinBodyMass;
-    CONFIG.maxBodyMass = targetMaxBodyMass;
-    CONFIG.minBodyRadius = targetMinBodyRadius;
-    CONFIG.maxBodyRadius = targetMaxBodyRadius;
+    config.numBodies = targetBodyCount;
+    config.gravitationalConstant = targetGravitationalConstant;
+    config.timeScale = targetTimeScale;
+    config.centralBodyMass = targetCentralBodyMass;
+    config.centralBodyRadius = targetCentralBodyRadius;
+    config.minOrbitRadius = targetMinOrbitRadius;
+    config.maxOrbitRadius = targetMaxOrbitRadius;
+    config.minBodyMass = targetMinBodyMass;
+    config.maxBodyMass = targetMaxBodyMass;
+    config.minBodyRadius = targetMinBodyRadius;
+    config.maxBodyRadius = targetMaxBodyRadius;
 }
 
 void menuGUI::reset() {

@@ -4,8 +4,8 @@
 
 renderer::renderer(int width, int height, const char *title) : window(nullptr),
                                                                camera(glm::vec3(
-                                                                   CONFIG.screenWidth / 2.0f,
-                                                                   CONFIG.screenHeight / 2.0f, 2000.0f)),
+                                                                   config.screenWidth / 2.0f,
+                                                                   config.screenHeight / 2.0f, 2000.0f)),
                                                                width(width),
                                                                height(height),
                                                                title(title),
@@ -138,9 +138,9 @@ void renderer::renderFrame(const std::vector<body> &bodies, const Shader &shader
             instanceData.push_back(b.position.y);
             instanceData.push_back(b.position.z);
             instanceData.push_back(b.radius);
-            instanceData.push_back(b.colour.r);
-            instanceData.push_back(b.colour.g);
-            instanceData.push_back(b.colour.b);
+            instanceData.push_back(b.color.r);
+            instanceData.push_back(b.color.g);
+            instanceData.push_back(b.color.b);
         }
 
         glBindBuffer(GL_ARRAY_BUFFER, instanceVBO);
@@ -186,7 +186,7 @@ void renderer::processInput(double deltaTime) {
     }
 
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pausePressed) {
-        CONFIG.paused = !CONFIG.paused;
+        config.paused = !config.paused;
         pausePressed = true;
     }
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE) {

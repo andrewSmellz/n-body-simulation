@@ -4,24 +4,30 @@
 #include <random>
 #include "glm/detail/func_geometric.inl"
 
-body::body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass)
-    : position(position), velocity(velocity), colour(colour), mass(mass), radius(radius) {
+body::body(const glm::vec3 position, const glm::vec3 velocity, const glm::vec3 color, const float radius,
+           const float mass)
+    : position(position), velocity(velocity), color(color), mass(mass), radius(radius) {
 }
 
-SphereData body::generateSphereVertices(float radius, int segments) {
+SphereData body::generateSphereVertices(const float radius, const int segments) {
     SphereData sphere;
-    constexpr float PI = 3.14159265359f;
 
-    // Generate vertices
+    /**
+     *theta is the polar angle(vertical) ranging from 0 to pi
+     *phi is the azimuthal angle(horizontal) ranging from o to 2*pi
+     *these two angles define any point on a sphere
+     *then take the sphere point and translate it to xyz point
+     */
     for (int i = 0; i <= segments; i++) {
-        float theta = PI * static_cast<float>(i) / static_cast<float>(segments);
-        float sinTheta = std::sin(theta);
-        float cosTheta = std::cos(theta);
+        constexpr float PI = 3.14159265359f;
+        const float theta = PI * static_cast<float>(i) / static_cast<float>(segments);
+        const float sinTheta = std::sin(theta);
+        const float cosTheta = std::cos(theta);
 
         for (int j = 0; j <= segments; j++) {
-            float phi = 2.0f * PI * static_cast<float>(j) / static_cast<float>(segments);
-            float sinPhi = std::sin(phi);
-            float cosPhi = std::cos(phi);
+            const float phi = 2.0f * PI * static_cast<float>(j) / static_cast<float>(segments);
+            const float sinPhi = std::sin(phi);
+            const float cosPhi = std::cos(phi);
 
             // Spherical to Cartesian coordinates
             float x = radius * sinTheta * cosPhi;
@@ -31,6 +37,8 @@ SphereData body::generateSphereVertices(float radius, int segments) {
             sphere.vertices.push_back(x);
             sphere.vertices.push_back(y);
             sphere.vertices.push_back(z);
+
+            //normals for lighting reflections
             glm::vec3 normal = glm::normalize(glm::vec3(x, y, z));
             sphere.normals.push_back(normal.x);
             sphere.normals.push_back(normal.y);
@@ -41,8 +49,8 @@ SphereData body::generateSphereVertices(float radius, int segments) {
     // Generate indices for triangles
     for (int i = 0; i < segments; i++) {
         for (int j = 0; j < segments; j++) {
-            int first = i * (segments + 1) + j;
-            int second = first + segments + 1;
+            const int first = i * (segments + 1) + j;
+            const int second = first + segments + 1;
 
             // First triangle
             sphere.indices.push_back(first);
@@ -59,35 +67,35 @@ SphereData body::generateSphereVertices(float radius, int segments) {
     return sphere;
 }
 
-std::vector<body> body::generateBodies(unsigned int numBodies) {
+std::vector<body> body::generateBodies(const unsigned int numBodies) {
     std::vector<body> bodies;
     body sun(
-        glm::vec3(CONFIG.screenWidth / 2.0f, CONFIG.screenHeight / 2.0f, 0),
+        glm::vec3(config.screenWidth / 2.0f, config.screenHeight / 2.0f, 0),
         glm::vec3(0, 0, 0),
         glm::vec3(1, 1, 0),
-        CONFIG.centralBodyRadius,
-        CONFIG.centralBodyMass
+        config.centralBodyRadius,
+        config.centralBodyMass
     );
     bodies.push_back(sun);
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> radius_dist(CONFIG.minOrbitRadius, CONFIG.maxOrbitRadius);
+    std::uniform_real_distribution<float> radius_dist(config.minOrbitRadius, config.maxOrbitRadius);
     std::uniform_real_distribution<float> angle_dist(0.0f, 2.0f * 3.14159f);
     std::uniform_real_distribution<float> inclination_dist(-0.8f, 0.8f);
-    std::uniform_real_distribution<float> mass_dist(CONFIG.minBodyMass, CONFIG.maxBodyMass);
-    std::uniform_real_distribution<float> body_radius_dist(CONFIG.minBodyRadius, CONFIG.maxBodyRadius);
+    std::uniform_real_distribution<float> mass_dist(config.minBodyMass, config.maxBodyMass);
+    std::uniform_real_distribution<float> body_radius_dist(config.minBodyRadius, config.maxBodyRadius);
     std::uniform_real_distribution<float> z_dist(-200.0f, 200.0f);
 
-
-    for (size_t i = 0; i < numBodies; i++) {
+    //TODO fix z position to properly have stable orbits
+    for (int i = 0; i < numBodies; i++) {
         float radius = radius_dist(gen);
         float angle = angle_dist(gen);
         float inclination = inclination_dist(gen);
         glm::vec3 colour(std::sin(i), std::cos(i), 1);
         float mass = mass_dist(gen);
         float bodyRadius = body_radius_dist(gen);
-        body b = body::createStableOrbit(sun, radius, angle, inclination, colour, bodyRadius, mass);
+        body b = createStableOrbit(sun, radius, angle, inclination, colour, bodyRadius, mass);
         b.position.z += z_dist(gen);
         bodies.push_back(b);
     }
@@ -95,43 +103,43 @@ std::vector<body> body::generateBodies(unsigned int numBodies) {
 }
 
 void body::collisionCheck(body &other) {
-    float distance = glm::distance(this->position, other.position);
+    const float distance = glm::distance(this->position, other.position);
     if (distance > this->radius + other.radius) return;
 
     // Collision normal (from other to this)
-    glm::vec3 collisionNormal = glm::normalize(this->position - other.position);
+    const glm::vec3 collisionNormal = glm::normalize(this->position - other.position);
 
     // Separate overlapping bodies based on mass
-    float overlap = (this->radius + other.radius) - distance;
-    float totalMass = this->mass + other.mass;
+    const float overlap = (this->radius + other.radius) - distance;
+    const float totalMass = this->mass + other.mass;
     this->position += collisionNormal * (overlap * other.mass / totalMass);
     other.position -= collisionNormal * (overlap * this->mass / totalMass);
 
     // Relative velocity
-    glm::vec3 relativeVelocity = this->velocity - other.velocity;
-    float velocityAlongNormal = glm::dot(relativeVelocity, collisionNormal);
+    const glm::vec3 relativeVelocity = this->velocity - other.velocity;
+    const float velocityAlongNormal = glm::dot(relativeVelocity, collisionNormal);
 
     // Don't resolve if velocities are separating
     if (velocityAlongNormal > 0) return;
     // Coefficient of restitution (1.0 = perfectly elastic, 0.0 = perfectly inelastic)
-    float restitution = 1.0f;
+    constexpr float restitution = 1.0f;
 
     // Calculate impulse scalar (from momentum conservation)
     float impulseMagnitude = -(1.0f + restitution) * velocityAlongNormal;
     impulseMagnitude /= (1.0f / this->mass + 1.0f / other.mass);
 
     // Apply impulse
-    glm::vec3 impulse = impulseMagnitude * collisionNormal;
+    const glm::vec3 impulse = impulseMagnitude * collisionNormal;
     this->velocity += impulse / this->mass;
     other.velocity -= impulse / other.mass;
 }
 
-glm::vec3 body::calculateGravitationalForce(const body &other) {
+glm::vec3 body::calculateGravitationalForce(const body &other) const {
     //float G = 6.67430e-11f; true value
-    float G = CONFIG.gravitationalConstant;
+    const float G = config.gravitationalConstant;
 
-    float distance = glm::distance(this->position, other.position);
-    float force = (G * this->mass * other.mass) / (distance * distance);
+    const float distance = glm::distance(this->position, other.position);
+    const float force = (G * this->mass * other.mass) / (distance * distance);
     glm::vec3 forceDirection = other.position - this->position;
     forceDirection = glm::normalize(forceDirection);
     return forceDirection * force;
@@ -140,7 +148,7 @@ glm::vec3 body::calculateGravitationalForce(const body &other) {
 body body::createStableOrbit(const body &central, float orbitRadius, float angle, float inclination, glm::vec3 colour,
                              float radius,
                              float mass) {
-    float G = CONFIG.gravitationalConstant;
+    float G = config.gravitationalConstant;
 
     // Calculate 3D position with inclination
     float x = central.position.x + orbitRadius * std::cos(angle) * std::cos(inclination);

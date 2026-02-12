@@ -6,11 +6,9 @@
 
 
 int main() {
-    renderer renderEngine(CONFIG.screenWidth, CONFIG.screenHeight, CONFIG.windowTitle);
+    renderer renderEngine(config.screenWidth, config.screenHeight, config.windowTitle);
     menuGUI menu(renderEngine.getWindow());
     Shader shader("shaders/shader.vert", "shaders/shader.frag");
-
-
     auto bodies = body::generateBodies(menu.targetBodyCount);
     auto sphereData = body::generateSphereVertices(1.0f, 32);
 
@@ -18,8 +16,11 @@ int main() {
 
     double deltaTime = 0.0f;
     double lastFrame = 0.0f;
+    double currentTime;
+
+
     while (!renderEngine.shouldClose()) {
-        double currentTime = glfwGetTime();
+        currentTime = glfwGetTime();
         deltaTime = currentTime - lastFrame;
         lastFrame = currentTime;
 
@@ -27,18 +28,18 @@ int main() {
 
         if (menu.needsUpdate) {
             menu.update();
-            bodies = body::generateBodies(CONFIG.numBodies);
-            renderEngine.setupBuffers(sphereData, CONFIG.numBodies);
+            bodies = body::generateBodies(config.numBodies);
+            renderEngine.setupBuffers(sphereData, config.numBodies);
             menu.needsUpdate = false;
         }
         if (menu.needsReset) {
             menu.reset();
             menu.update();
-            bodies = body::generateBodies(CONFIG.numBodies);
-            renderEngine.setupBuffers(sphereData, CONFIG.numBodies);
+            bodies = body::generateBodies(config.numBodies);
+            renderEngine.setupBuffers(sphereData, config.numBodies);
             menu.needsReset = false;
         }
-        if (!CONFIG.paused) {
+        if (!config.paused) {
             physicsEngine::update(bodies, deltaTime);
         }
 

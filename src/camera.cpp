@@ -1,4 +1,3 @@
-
 #include "camera.h"
 
 // Constructor with vectors
@@ -27,13 +26,13 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 }
 
 // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
-glm::mat4 Camera::GetViewMatrix() {
+glm::mat4 Camera::GetViewMatrix() const {
     return glm::lookAt(Position, Position + Front, Up);
 }
 
 // Processes input received from any keyboard-like input system
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime) {
-    float velocity = MovementSpeed * deltaTime;
+void Camera::ProcessKeyboard(const CameraMovement direction, const double deltaTime) {
+    const float velocity = MovementSpeed * deltaTime;
     if (direction == FORWARD)
         Position += Front * velocity;
     if (direction == BACKWARD)
@@ -49,12 +48,12 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime) {
 }
 
 // Processes input received from a mouse input system
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch) {
-    xoffset *= MouseSensitivity;
-    yoffset *= MouseSensitivity;
+void Camera::ProcessMouseMovement(float xOffSet, float yOffSet, bool constrainPitch) {
+    xOffSet *= MouseSensitivity;
+    yOffSet *= MouseSensitivity;
 
-    Yaw += xoffset;
-    Pitch += yoffset;
+    Yaw += xOffSet;
+    Pitch += yOffSet;
 
     // Make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch) {
@@ -69,8 +68,8 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPi
 }
 
 // Processes input received from a mouse scroll-wheel event
-void Camera::ProcessMouseScroll(float yoffset) {
-    Zoom -= yoffset;
+void Camera::ProcessMouseScroll(float yOffSet) {
+    Zoom -= yOffSet;
     if (Zoom < 1.0f)
         Zoom = 1.0f;
     if (Zoom > 45.0f)

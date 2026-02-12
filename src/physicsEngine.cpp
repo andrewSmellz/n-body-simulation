@@ -3,7 +3,7 @@
 
 void physicsEngine::update(std::vector<body> &bodies, double deltaTime) {
     if (bodies.empty()) return;
-    deltaTime *= CONFIG.timeScale;
+    deltaTime *= config.timeScale;
     std::vector<glm::vec3> forces(bodies.size(), glm::vec3(0.0f));
     calculateForces(bodies, forces);
     applyForces(bodies, forces, deltaTime);

@@ -1,5 +1,5 @@
-#ifndef N_BODY_SIMULATION_GL_OBJECT_H
-#define N_BODY_SIMULATION_GL_OBJECT_H
+#ifndef N_BODY_SIMULATION_GL_BODY_H
+#define N_BODY_SIMULATION_GL_BODY_H
 #include <vector>
 #include "glm/vec3.hpp"
 
@@ -13,11 +13,11 @@ class body {
 public:
     glm::vec3 position;
     glm::vec3 velocity;
-    glm::vec3 colour;
+    glm::vec3 color;
     float mass;
     float radius;
 
-    body(glm::vec3 position, glm::vec3 velocity, glm::vec3 colour, float radius, float mass);
+    body(glm::vec3 position, glm::vec3 velocity, glm::vec3 color, float radius, float mass);
 
     static SphereData generateSphereVertices(float radius, int segments = 1);
 
@@ -25,7 +25,7 @@ public:
 
     void collisionCheck(body &other);
 
-    glm::vec3 calculateGravitationalForce(const body &other);
+    [[nodiscard]] glm::vec3 calculateGravitationalForce(const body &other) const;
 
     static body createStableOrbit(const body &central, float orbitRadius, float angle, float inclination,
                                   glm::vec3 colour, float radius,
@@ -33,4 +33,4 @@ public:
 };
 
 
-#endif //N_BODY_SIMULATION_GL_OBJECT_H
+#endif //N_BODY_SIMULATION_GL_BODY_H

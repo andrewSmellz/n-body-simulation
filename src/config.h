@@ -1,19 +1,8 @@
 #ifndef N_BODY_SIMULATION_GL_CONFIG_H
 #define N_BODY_SIMULATION_GL_CONFIG_H
 
-class config {
-public:
-    // Singleton access
-    static config &getInstance() {
-        static config instance;
-        return instance;
-    }
 
-    // Delete copy constructor and assignment operator
-    config(const config &) = delete;
-
-    config &operator=(const config &) = delete;
-
+struct Config {
     //window settings
     unsigned int screenWidth = 1980;
     unsigned int screenHeight = 1080;
@@ -36,11 +25,9 @@ public:
     float maxBodyMass = 10.0f;
     float minBodyRadius = 15.0f;
     float maxBodyRadius = 30.0f;
-
-private:
-    config() = default;
 };
 
-#define CONFIG config::getInstance()
+inline Config config;
+
 
 #endif //N_BODY_SIMULATION_GL_CONFIG_H

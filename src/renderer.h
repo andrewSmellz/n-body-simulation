@@ -12,8 +12,6 @@ public:
 
     ~renderer();
 
-    bool init();
-
     void setupBuffers(const SphereData &sphereData, unsigned int numBodies);
 
     void renderFrame(const std::vector<body> &bodies, const Shader &shader);
@@ -40,6 +38,8 @@ private:
     bool tabPressed;
     bool pausePressed;
     float lastX, lastY;
+
+    bool init();
 
     static renderer *getRenderer(GLFWwindow *window);
 
