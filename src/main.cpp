@@ -14,8 +14,8 @@ int main() {
 
     renderEngine.setupBuffers(sphereData, menu.targetBodyCount);
 
-    double deltaTime = 0.0f;
-    double lastFrame = 0.0f;
+    double deltaTime = 0.0;
+    double lastFrame = 0.0;
     double currentTime;
 
 

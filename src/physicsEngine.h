@@ -7,12 +7,12 @@
 
 class physicsEngine {
 public:
-    static void update(std::vector<body> &bodies, double deltaTime);
+    static void update(std::vector<body> &bodies, float deltaTime);
 
 private:
-    static void calculateForces(std::vector<body> &bodies, std::vector<glm::vec3> &forces);
+    static void calculateForces(const std::vector<body> &bodies, std::vector<glm::vec3> &forces);
 
-    static void applyForces(std::vector<body> &bodies, std::vector<glm::vec3> &forces, float deltaTime);
+    static void applyForces(std::vector<body> &bodies, const std::vector<glm::vec3> &forces, float deltaTime);
 
     static void collisionCheck(std::vector<body> &bodies);
 };

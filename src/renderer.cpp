@@ -101,7 +101,7 @@ void renderer::setupBuffers(const SphereData &sphereData, unsigned int numBodies
     glEnableVertexAttribArray(0);
 
     //vertex normal attribute
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *) (3 * sizeof(float)));
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<void *>(3 * sizeof(float)));
     glEnableVertexAttribArray(4);
 
     // Setup instance buffer
@@ -221,32 +221,31 @@ renderer *renderer::getRenderer(GLFWwindow *window) {
 
 void renderer::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     glViewport(0, 0, width, height);
-    renderer *r = getRenderer(window);
-    if (r) {
+    if (renderer *r = getRenderer(window)) {
         r->width = width;
         r->height = height;
     }
 }
 
-void renderer::mouseCallback(GLFWwindow *window, double xpos, double ypos) {
+void renderer::mouseCallback(GLFWwindow *window, double xpos, double yPos) {
     renderer *r = getRenderer(window);
     if (!r || r->menuMode) return;
     if (r->firstMouse) {
         r->lastX = xpos;
-        r->lastY = ypos;
+        r->lastY = yPos;
         r->firstMouse = false;
     }
 
     float xoffset = xpos - r->lastX;
-    float yoffset = r->lastY - ypos;
+    float yoffset = r->lastY - yPos;
 
     r->lastX = xpos;
-    r->lastY = ypos;
+    r->lastY = yPos;
 
     r->camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-void renderer::scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+void renderer::scrollCallback(GLFWwindow *window, double xOffSet, double yoffset) {
     renderer *r = getRenderer(window);
     if (!r || r->menuMode) return;
 

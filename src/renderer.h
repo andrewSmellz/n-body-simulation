@@ -45,9 +45,9 @@ private:
 
     static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 
-    static void mouseCallback(GLFWwindow *window, double xpos, double ypos);
+    static void mouseCallback(GLFWwindow *window, double xpos, double yPos);
 
-    static void scrollCallback(GLFWwindow *window, double xoffset, double ypos);
+    static void scrollCallback(GLFWwindow *window, double xOffSet, double yPos);
 };
 
 
