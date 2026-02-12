@@ -8,7 +8,7 @@
 
 class menuGUI {
 public:
-    menuGUI(GLFWwindow *window);
+    explicit menuGUI(GLFWwindow *window);
 
     ~menuGUI();
 
