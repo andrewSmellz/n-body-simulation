@@ -14,7 +14,7 @@ public:
 
     void setupBuffers(const SphereData &sphereData, unsigned int numBodies);
 
-    void renderFrame(const std::vector<body> &bodies, const Shader &shader);
+    void renderFrame(const std::vector<body> &bodies, const Shader &shader) const;
 
     [[nodiscard]] bool shouldClose() const;
 

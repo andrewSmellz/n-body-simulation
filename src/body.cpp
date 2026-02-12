@@ -92,10 +92,10 @@ std::vector<body> body::generateBodies(const unsigned int numBodies) {
         float radius = radius_dist(gen);
         float angle = angle_dist(gen);
         float inclination = inclination_dist(gen);
-        glm::vec3 colour(std::sin(i), std::cos(i), 1);
+        glm::vec3 color(std::sin(i), std::cos(i), 1);
         float mass = mass_dist(gen);
         float bodyRadius = body_radius_dist(gen);
-        body b = createStableOrbit(sun, radius, angle, inclination, colour, bodyRadius, mass);
+        body b = createStableOrbit(sun, radius, angle, inclination, color, bodyRadius, mass);
         b.position.z += z_dist(gen);
         bodies.push_back(b);
     }
@@ -145,7 +145,7 @@ glm::vec3 body::calculateGravitationalForce(const body &other) const {
     return forceDirection * force;
 }
 
-body body::createStableOrbit(const body &central, float orbitRadius, float angle, float inclination, glm::vec3 colour,
+body body::createStableOrbit(const body &central, float orbitRadius, float angle, float inclination, glm::vec3 color,
                              float radius,
                              float mass) {
     float G = config.gravitationalConstant;
@@ -185,5 +185,5 @@ body body::createStableOrbit(const body &central, float orbitRadius, float angle
 
     glm::vec3 velocity = velocityDirection * orbitSpeed;
 
-    return {position, velocity, colour, radius, mass};
+    return {position, velocity, color, radius, mass};
 }

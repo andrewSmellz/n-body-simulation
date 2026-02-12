@@ -49,7 +49,7 @@ public:
            float yaw, float pitch);
 
     // Returns the view matrix calculated using Euler Angles and the LookAt Matrix
-    glm::mat4 GetViewMatrix() const;
+    [[nodiscard]] glm::mat4 GetViewMatrix() const;
 
     // Processes input received from any keyboard-like input system
     void ProcessKeyboard(CameraMovement direction, double deltaTime);

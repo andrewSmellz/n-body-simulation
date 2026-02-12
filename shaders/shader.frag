@@ -1,7 +1,7 @@
 #version 460 core
 out vec4 FragColor;
 
-in vec3 fragColour;
+in vec3 fragColor;
 in vec3 normal;
 in vec3 fragPos;
 
@@ -14,11 +14,11 @@ void main() {
     vec3 lightDir = normalize(lightPos - fragPos);
 
     // Ambient
-    vec3 ambient = 0.5 * fragColour;
+    vec3 ambient = 0.5 * fragColor;
 
     // Diffuse
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * fragColour;
+    vec3 diffuse = diff * fragColor;
 
     // Specular
     vec3 viewDir = normalize(viewPos - fragPos);

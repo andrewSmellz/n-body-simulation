@@ -28,7 +28,7 @@ public:
     [[nodiscard]] glm::vec3 calculateGravitationalForce(const body &other) const;
 
     static body createStableOrbit(const body &central, float orbitRadius, float angle, float inclination,
-                                  glm::vec3 colour, float radius,
+                                  glm::vec3 color, float radius,
                                   float mass);
 };
 

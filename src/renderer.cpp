@@ -2,13 +2,13 @@
 #include "config.h"
 #include <iostream>
 
-renderer::renderer(int width, int height, const char *title) : window(nullptr),
+renderer::renderer(int width, int height, const char *title) : width(width),
+                                                               height(height),
+                                                               title(title),
+                                                               window(nullptr),
                                                                camera(glm::vec3(
                                                                    config.screenWidth / 2.0f,
                                                                    config.screenHeight / 2.0f, 2000.0f)),
-                                                               width(width),
-                                                               height(height),
-                                                               title(title),
                                                                VAO(0), VBO(0), EBO(0), instanceVBO(0),
                                                                indexCount(0),
                                                                menuMode(false),
@@ -50,7 +50,7 @@ bool renderer::init() {
 
     GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
     const GLFWvidmode *mode = glfwGetVideoMode(primaryMonitor);
-    int xpos = (mode->width - width) / 2;
+    const int xpos = (mode->width - width) / 2;
     int ypos = (mode->height - height) / 2;
     glfwSetWindowPos(window, xpos, ypos);
 
@@ -78,7 +78,7 @@ bool renderer::init() {
     return true;
 }
 
-void renderer::setupBuffers(const SphereData &sphereData, unsigned int numBodies) {
+void renderer::setupBuffers(const SphereData &sphereData, const unsigned int numBodies) {
     indexCount = sphereData.indices.size();
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -119,7 +119,7 @@ void renderer::setupBuffers(const SphereData &sphereData, unsigned int numBodies
     glEnableVertexAttribArray(2);
     glVertexAttribDivisor(2, 1);
 
-    // Instance colour attribute
+    // Instance color attribute
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), reinterpret_cast<void *>(4 * sizeof(float)));
     glEnableVertexAttribArray(3);
     glVertexAttribDivisor(3, 1);
@@ -128,7 +128,7 @@ void renderer::setupBuffers(const SphereData &sphereData, unsigned int numBodies
     glBindVertexArray(0);
 }
 
-void renderer::renderFrame(const std::vector<body> &bodies, const Shader &shader) {
+void renderer::renderFrame(const std::vector<body> &bodies, const Shader &shader) const {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (!bodies.empty()) {
@@ -206,7 +206,7 @@ void renderer::processInput(double deltaTime) {
             camera.ProcessKeyboard(UP, deltaTime);
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
             camera.ProcessKeyboard(DOWN, deltaTime);
-        if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
+        //if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS);
     }
 }
 
